@@ -1,0 +1,31 @@
+---
+description: Rules for generating a Git commit message
+globs: 
+alwaysApply: false
+---
+# Commit Message Guidelines
+
+## Commit Message Structure
+- The title should summarize what the changes in the commit achieve (the intent)
+- Include all relevant information about what has changed and why the change has been made
+- Include the JIRA issue key as the last entry in the commit message
+- Include the type of the change as a prefix for the commit message title inside square brackets. The allowed types are:
+    - feat
+    - fix
+    - test
+	- chore
+	- docs
+	- refactor
+	- style
+	- perf
+
+## Example Format
+```
+[feat] add regex pattern matching support
+
+- Implemented regex pattern matching using Go's regexp package
+- Added support for case-insensitive matching with -i flag
+- Updated help documentation to include regex examples
+
+Implements: PROJ-123
+```

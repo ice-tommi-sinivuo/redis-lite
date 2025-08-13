@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "jira-mcp-server": {
+      "command": "npx",
+      "args": ["tsx", "~/demo/jira-mcp-server/src/main.ts"],
+      "env": {
+        "JIRA_API_KEY": "dG9tbWlAd29ubmEuZmk6QVRBVFQzeEZmR0YwNHFUWDc5ZGpFeTdIRXhFaVJTTGczWGEwcGQ5UlhtWFRPLUNfRU9ZYUJZOGQtU1RBXy1jOU92NHdXdk1vWXZnQWJWaU5BV2NRSzNjZnhmc3lTdDNfc1VxcU1sOGdpNHRVUUZ0WlRJT1QxUXFvVy0za1NuZGtXblE5R3JBUWNnVy1TZUlkRndUYllRRXhLU0ZDS2prckdlTmZBbjAxZ3hGcU05RE1MbEt2Y25BPUNDRjNBNjY0"
+      }
+    }
+  }
+}

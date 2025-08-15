@@ -8,6 +8,7 @@ import (
 
 	"github.com/tsinivuo/redis-lite/pkg/commands"
 	"github.com/tsinivuo/redis-lite/pkg/resp"
+	"github.com/tsinivuo/redis-lite/pkg/storage"
 )
 
 // mockConn implements net.Conn for testing
@@ -62,8 +63,9 @@ func (m *mockConn) getWrittenData() string {
 func TestNewConnection(t *testing.T) {
 	conn := newMockConn("")
 	handler := commands.NewCommandHandler()
+	store := storage.NewMemoryStore()
 
-	connection := NewConnection(conn, handler)
+	connection := NewConnection(conn, handler, store)
 
 	if connection == nil {
 		t.Fatal("NewConnection returned nil")
@@ -82,8 +84,9 @@ func TestConnection_processCommand_ValidPing(t *testing.T) {
 	conn := newMockConn("")
 	handler := commands.NewCommandHandler()
 	handler.Register(commands.NewPingCommand())
+	store := storage.NewMemoryStore()
 
-	connection := NewConnection(conn, handler)
+	connection := NewConnection(conn, handler, store)
 
 	// Create a PING command message: *1\r\n$4\r\nPING\r\n
 	pingArray := resp.NewArray([]*resp.Message{
@@ -105,8 +108,9 @@ func TestConnection_processCommand_ValidEcho(t *testing.T) {
 	conn := newMockConn("")
 	handler := commands.NewCommandHandler()
 	handler.Register(commands.NewEchoCommand())
+	store := storage.NewMemoryStore()
 
-	connection := NewConnection(conn, handler)
+	connection := NewConnection(conn, handler, store)
 
 	// Create an ECHO command message: *2\r\n$4\r\nECHO\r\n$5\r\nhello\r\n
 	echoArray := resp.NewArray([]*resp.Message{
@@ -129,8 +133,9 @@ func TestConnection_processCommand_CaseInsensitive(t *testing.T) {
 	conn := newMockConn("")
 	handler := commands.NewCommandHandler()
 	handler.Register(commands.NewPingCommand())
+	store := storage.NewMemoryStore()
 
-	connection := NewConnection(conn, handler)
+	connection := NewConnection(conn, handler, store)
 
 	// Test lowercase command
 	pingArray := resp.NewArray([]*resp.Message{
@@ -151,8 +156,9 @@ func TestConnection_processCommand_CaseInsensitive(t *testing.T) {
 func TestConnection_processCommand_UnknownCommand(t *testing.T) {
 	conn := newMockConn("")
 	handler := commands.NewCommandHandler()
+	store := storage.NewMemoryStore()
 
-	connection := NewConnection(conn, handler)
+	connection := NewConnection(conn, handler, store)
 
 	// Create an unknown command message
 	unknownArray := resp.NewArray([]*resp.Message{
@@ -174,8 +180,9 @@ func TestConnection_processCommand_UnknownCommand(t *testing.T) {
 func TestConnection_processCommand_InvalidInput(t *testing.T) {
 	conn := newMockConn("")
 	handler := commands.NewCommandHandler()
+	store := storage.NewMemoryStore()
 
-	connection := NewConnection(conn, handler)
+	connection := NewConnection(conn, handler, store)
 
 	testCases := []struct {
 		name     string

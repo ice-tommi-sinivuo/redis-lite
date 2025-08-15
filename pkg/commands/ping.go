@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/tsinivuo/redis-lite/pkg/resp"
+	"github.com/tsinivuo/redis-lite/pkg/storage"
 )
 
 // PingCommand implements the PING command
@@ -29,7 +30,7 @@ func (c *PingCommand) Validate(args []*resp.Message) error {
 }
 
 // Execute processes the PING command
-func (c *PingCommand) Execute(args []*resp.Message) (*resp.Message, error) {
+func (c *PingCommand) Execute(args []*resp.Message, store storage.Store) (*resp.Message, error) {
 	// If no arguments, return "PONG"
 	if len(args) == 0 {
 		return resp.NewSimpleString("PONG"), nil

@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/tsinivuo/redis-lite/pkg/resp"
+	"github.com/tsinivuo/redis-lite/pkg/storage"
 )
 
 func TestPingCommand_Name(t *testing.T) {
@@ -57,6 +58,7 @@ func TestPingCommand_Validate(t *testing.T) {
 
 func TestPingCommand_Execute(t *testing.T) {
 	cmd := NewPingCommand()
+	store := storage.NewMemoryStore()
 
 	testCases := []struct {
 		name         string
@@ -92,7 +94,7 @@ func TestPingCommand_Execute(t *testing.T) {
 
 	for _, tc := range testCases {
 		t.Run(tc.name, func(t *testing.T) {
-			response, err := cmd.Execute(tc.args)
+			response, err := cmd.Execute(tc.args, store)
 			if err != nil {
 				t.Fatalf("Unexpected error: %v", err)
 			}
@@ -110,10 +112,11 @@ func TestPingCommand_Execute(t *testing.T) {
 
 func TestPingCommand_Execute_InvalidType(t *testing.T) {
 	cmd := NewPingCommand()
+	store := storage.NewMemoryStore()
 
 	// Test with integer argument (should return error)
 	args := []*resp.Message{resp.NewInteger(42)}
-	response, err := cmd.Execute(args)
+	response, err := cmd.Execute(args, store)
 
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)

@@ -25,5 +25,5 @@ for example iterating on a step.
 14. Once the human developer approves the implementation, please suggest a commit message for the human developer
 15. Once the human developer approves the commit message, please commit the changes
 16. Push the changes to the remote repository
-17. Create a pull request for the changes using GitHub CLI
+17. Create a pull request for the changes using GitHub CLI. Please use `gh pr create --fill`
 18. The task is now complete. Good job! Remember to provide the link to the pull request to the human developer.

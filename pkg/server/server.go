@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/tsinivuo/redis-lite/pkg/commands"
+	"github.com/tsinivuo/redis-lite/pkg/storage"
 )
 
 // Server represents the Redis-Lite TCP server
@@ -15,6 +16,7 @@ type Server struct {
 	port           int
 	listener       net.Listener
 	commandHandler *commands.CommandHandler
+	store          storage.Store
 	connections    map[net.Conn]*Connection
 	mutex          sync.RWMutex
 	shutdown       chan struct{}
@@ -27,6 +29,7 @@ func NewServer(address string, port int) *Server {
 		address:        address,
 		port:           port,
 		commandHandler: commands.NewCommandHandler(),
+		store:          storage.NewMemoryStore(),
 		connections:    make(map[net.Conn]*Connection),
 		shutdown:       make(chan struct{}),
 	}
@@ -34,6 +37,8 @@ func NewServer(address string, port int) *Server {
 	// Register built-in commands
 	server.commandHandler.Register(commands.NewPingCommand())
 	server.commandHandler.Register(commands.NewEchoCommand())
+	server.commandHandler.Register(commands.NewSetCommand())
+	server.commandHandler.Register(commands.NewGetCommand())
 
 	return server
 }
@@ -101,7 +106,7 @@ func (s *Server) acceptConnections() {
 		}
 
 		// Create connection handler
-		connection := NewConnection(conn, s.commandHandler)
+		connection := NewConnection(conn, s.commandHandler, s.store)
 
 		// Track the connection
 		s.mutex.Lock()

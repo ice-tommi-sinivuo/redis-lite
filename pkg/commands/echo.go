@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/tsinivuo/redis-lite/pkg/resp"
+	"github.com/tsinivuo/redis-lite/pkg/storage"
 )
 
 // EchoCommand implements the ECHO command
@@ -29,7 +30,7 @@ func (c *EchoCommand) Validate(args []*resp.Message) error {
 }
 
 // Execute processes the ECHO command
-func (c *EchoCommand) Execute(args []*resp.Message) (*resp.Message, error) {
+func (c *EchoCommand) Execute(args []*resp.Message, store storage.Store) (*resp.Message, error) {
 	arg := args[0]
 
 	switch arg.Type {

@@ -7,6 +7,7 @@ import (
 
 	"github.com/tsinivuo/redis-lite/pkg/commands"
 	"github.com/tsinivuo/redis-lite/pkg/resp"
+	"github.com/tsinivuo/redis-lite/pkg/storage"
 )
 
 // Connection represents a client connection to the server
@@ -15,15 +16,17 @@ type Connection struct {
 	parser         *resp.Parser
 	serializer     *resp.Serializer
 	commandHandler *commands.CommandHandler
+	store          storage.Store
 }
 
 // NewConnection creates a new connection handler
-func NewConnection(conn net.Conn, commandHandler *commands.CommandHandler) *Connection {
+func NewConnection(conn net.Conn, commandHandler *commands.CommandHandler, store storage.Store) *Connection {
 	return &Connection{
 		conn:           conn,
 		parser:         resp.NewParser(conn),
 		serializer:     resp.NewSerializer(conn),
 		commandHandler: commandHandler,
+		store:          store,
 	}
 }
 
@@ -94,7 +97,7 @@ func (c *Connection) processCommand(message *resp.Message) *resp.Message {
 	commandArgs := args[1:]
 
 	// Execute the command
-	response, err := c.commandHandler.Execute(commandName, commandArgs)
+	response, err := c.commandHandler.Execute(commandName, commandArgs, c.store)
 	if err != nil {
 		return resp.NewError("ERR " + err.Error())
 	}

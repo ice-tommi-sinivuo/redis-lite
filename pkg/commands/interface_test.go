@@ -4,6 +4,7 @@ import (
 	"testing"
 
 	"github.com/tsinivuo/redis-lite/pkg/resp"
+	"github.com/tsinivuo/redis-lite/pkg/storage"
 )
 
 // mockCommand is a test implementation of the Command interface
@@ -15,7 +16,7 @@ func (m *mockCommand) Name() string {
 	return m.name
 }
 
-func (m *mockCommand) Execute(args []*resp.Message) (*resp.Message, error) {
+func (m *mockCommand) Execute(args []*resp.Message, store storage.Store) (*resp.Message, error) {
 	return resp.NewSimpleString("OK"), nil
 }
 
@@ -55,9 +56,10 @@ func TestCommandHandler_Execute(t *testing.T) {
 	handler := NewCommandHandler()
 	command := &mockCommand{name: "TEST"}
 	handler.Register(command)
+	store := storage.NewMemoryStore()
 
 	// Test successful execution
-	response, err := handler.Execute("TEST", []*resp.Message{})
+	response, err := handler.Execute("TEST", []*resp.Message{}, store)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}
@@ -73,9 +75,10 @@ func TestCommandHandler_Execute(t *testing.T) {
 
 func TestCommandHandler_Execute_UnknownCommand(t *testing.T) {
 	handler := NewCommandHandler()
+	store := storage.NewMemoryStore()
 
 	// Test unknown command
-	response, err := handler.Execute("UNKNOWN", []*resp.Message{})
+	response, err := handler.Execute("UNKNOWN", []*resp.Message{}, store)
 	if err != nil {
 		t.Fatalf("Unexpected error: %v", err)
 	}

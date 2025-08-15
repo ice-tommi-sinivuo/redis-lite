@@ -1,6 +1,9 @@
 package commands
 
-import "github.com/tsinivuo/redis-lite/pkg/resp"
+import (
+	"github.com/tsinivuo/redis-lite/pkg/resp"
+	"github.com/tsinivuo/redis-lite/pkg/storage"
+)
 
 // Command defines the interface that all Redis commands must implement
 type Command interface {
@@ -8,7 +11,7 @@ type Command interface {
 	Name() string
 
 	// Execute processes the command with given arguments and returns a RESP message
-	Execute(args []*resp.Message) (*resp.Message, error)
+	Execute(args []*resp.Message, store storage.Store) (*resp.Message, error)
 
 	// Validate checks if the command arguments are valid
 	Validate(args []*resp.Message) error
@@ -32,7 +35,7 @@ func (h *CommandHandler) Register(command Command) {
 }
 
 // Execute executes a command by name with the given arguments
-func (h *CommandHandler) Execute(commandName string, args []*resp.Message) (*resp.Message, error) {
+func (h *CommandHandler) Execute(commandName string, args []*resp.Message, store storage.Store) (*resp.Message, error) {
 	command, exists := h.commands[commandName]
 	if !exists {
 		return resp.NewError("ERR unknown command '" + commandName + "'"), nil
@@ -42,7 +45,7 @@ func (h *CommandHandler) Execute(commandName string, args []*resp.Message) (*res
 		return resp.NewError("ERR " + err.Error()), nil
 	}
 
-	return command.Execute(args)
+	return command.Execute(args, store)
 }
 
 // GetCommand returns a command by name

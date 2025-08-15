@@ -19,10 +19,11 @@ for example iterating on a step.
 8. Make sure you are on the "main" or "master" branch (whichever name is used in this repo) and pull the latest changes
 9. Checkout a new branch, named after the Jira issue key
 10. Implement the task
-11. Update (or create) `README.md` and `docs/architecture.md` if necessary to reflect the changes made
-12. Ask the human developer to review the implementation. If applicable, provide the human developer with steps to test the implementation themselves.
-13. Once the human developer approves the implementation, please suggest a commit message for the human developer
-14. Once the human developer approves the commit message, please commit the changes
-15. Push the changes to the remote repository
-16. Create a pull request for the changes using GitHub CLI
-17. The task is now complete. Good job! Remember to provide the link to the pull request to the human developer.
+11. Make sure you have written unit tests for the implementation
+12. Update (or create) `README.md` and `docs/architecture.md` if necessary to reflect the changes made
+13. Ask the human developer to review the implementation. If applicable, provide the human developer with steps to test the implementation themselves.
+14. Once the human developer approves the implementation, please suggest a commit message for the human developer
+15. Once the human developer approves the commit message, please commit the changes
+16. Push the changes to the remote repository
+17. Create a pull request for the changes using GitHub CLI
+18. The task is now complete. Good job! Remember to provide the link to the pull request to the human developer.

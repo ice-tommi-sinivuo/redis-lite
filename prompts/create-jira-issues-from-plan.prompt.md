@@ -1,9 +1,3 @@
----
-mode: 'agent'
-tools: ['githubRepo', 'codebase', 'fetch', 'create_jira_issue']
-description: 'Create Jira issues based on an implementation plan'
----
-
 Create Jira issues based on an implementation plan.
 The implementation plan is provided in the file `docs/plan.md`.
 Please follow the workflow below carefully to create the Jira issues successfully.

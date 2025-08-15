@@ -8,7 +8,7 @@ alwaysApply: true
 - Address me as "Captain" when responding to me
 - Follow all instructions CAREFULLY to make sure we succeed with our tasks
 
-## About the project
+## About the Project
 
 We are building a Redis server clone. We are writing the software in Go.
 
@@ -19,6 +19,9 @@ We are building a Redis server clone. We are writing the software in Go.
 3. **Focus:** Concentrate efforts on the specific task assigned. Avoid unrelated changes or scope creep.
 4. **Quality:** Strive for a clean, organized, well-tested, and secure codebase.
 
+## Identifying and Fixing Problems
+- Work hard to understand the root cause of a problem
+- Don't fix symptoms. Fix the root cause instead
 
 ## Code Quality Rules
 - Always prefer simple and elegant code
@@ -45,6 +48,7 @@ We are building a Redis server clone. We are writing the software in Go.
 - Only unit test public functions and methods
 - Remember to test edge cases and unexpected input in unit tests
 - The unit tests MUST NOT require starting the software itself (if applicable, eg. a server application)
+- Removing a failing test IS NOT the correct solution for fixing the failing test. A failing test means that either the test or the implementation is wrong, and one of them (or both) need to be fixed
 
 # Documenting learnings (important!)
 

@@ -14,10 +14,19 @@ Redis-Lite is a simplified Redis server clone implemented in Go. The project aim
   - Arrays (`*2\r\n$3\r\nfoo\r\n$3\r\nbar\r\n`)
   - Null values for both Bulk Strings and Arrays
 
+- **TCP Server**: Basic TCP server listening on port 6379 with:
+  - Concurrent client connection handling
+  - RESP protocol message parsing and serialization
+  - Command routing and execution framework
+  - Graceful shutdown support
+
+- **Basic Commands**:
+  - **PING**: Returns `PONG` or echoes provided message
+  - **ECHO**: Returns the provided argument
+
 ### Planned Features
 
-- TCP Server with concurrent client handling
-- Core Redis commands (GET, SET, PING, ECHO, etc.)
+- Core Redis commands (GET, SET, DEL, EXISTS, etc.)
 - Key expiration (TTL) support
 - In-memory data storage with thread safety
 - Persistence to disk
@@ -64,7 +73,36 @@ go test ./pkg/resp/... -v
 
 ### Usage
 
-*Note: The server implementation is still in progress. Currently, only the RESP protocol implementation is available.*
+#### Running the Server
+
+```bash
+# Build the server
+go build -o redis-lite ./cmd/redis-lite
+
+# Run the server (starts on port 6379)
+./redis-lite
+```
+
+#### Connecting with Redis CLI
+
+```bash
+# Connect with redis-cli and test basic commands
+redis-cli PING
+# Output: PONG
+
+redis-cli ECHO "Hello, World!"
+# Output: "Hello, World!"
+
+# You can also connect and run commands interactively
+redis-cli
+127.0.0.1:6379> PING
+PONG
+127.0.0.1:6379> ECHO test
+"test"
+127.0.0.1:6379> exit
+```
+
+#### Using the RESP Protocol Directly
 
 ```go
 package main
@@ -164,13 +202,14 @@ This project is for educational purposes. See the LICENSE file for details.
 
 ## Status
 
-🚧 **In Development**: This project is actively being developed. The RESP protocol implementation is complete and fully tested. Server implementation and Redis commands are planned for future releases.
+🚧 **In Development**: This project is actively being developed. The RESP protocol implementation and basic TCP server are complete and fully tested. Additional Redis commands and advanced features are planned for future releases.
 
 ### Current Implementation Status
 
 - ✅ RESP Protocol (Complete)
-- ⏳ TCP Server (Planned)
-- ⏳ Core Commands (Planned)
+- ✅ TCP Server (Complete)
+- ✅ Basic Commands (PING, ECHO)
+- ⏳ Core Commands (GET, SET, etc.)
 - ⏳ Storage Layer (Planned)
 - ⏳ Persistence (Planned)
 - ⏳ Expiry Management (Planned)
